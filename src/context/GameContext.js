@@ -1,4 +1,4 @@
-// src/context/GameContext.js
+﻿// src/context/GameContext.js
 import { createContext, useContext, useEffect, useState } from "react";
 
 const GameContext = createContext();
@@ -36,12 +36,36 @@ export function GameProvider({ children }) {
         } catch (_) {}
     }, [userId]);
 
+    // 서버 코드 매핑 (표시 이름 -> 서버 아이템 코드)
+    const serverCodeMap = {
+        "교실 열쇠": "key_office",
+        "교무실 열쇠": "key_office",
+        "과학실 열쇠": "key_science_room",
+        "도끼": "axe",
+        "마스터 키": "master_key",
+        "메모(사물함)": "memo_locker",
+        "메모(화이트보드)": "memo_whiteboard",
+        "메모(서랍)": "memo_Drawer",
+    };
+
     // 인벤토리 조작 함수들
-    const addItem = (item) => setItems((prev) => [...prev, item]);
+    const addItem = async (item) => {
+        const code = serverCodeMap[item] || item;
+        try {
+            await fetch(
+                `http://localhost:8080/save_item?item=${encodeURIComponent(code)}`,
+                { method: "GET" }
+            );
+        } catch (e) {
+            console.error("Failed to sync item to server:", e);
+        } finally {
+            setItems((prev) => (prev.includes(item) ? prev : [...prev, item]));
+        }
+    };
     const removeItem = (item) => setItems((prev) => prev.filter((i) => i !== item));
     const clearItems = () => setItems([]);
 
-    // 방 이동
+    // 이동
     const moveToNextRoom = () => setRoomNumber((prev) => prev + 1);
     const resetRoom = () => setRoomNumber(1);
 

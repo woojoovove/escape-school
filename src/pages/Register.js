@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import Layout from "../components/Layout";
 import { useNavigate } from "react-router-dom";
 import { useGame } from "../context/GameContext";
@@ -12,7 +12,7 @@ function Register() {
 
     const handleRegister = async () => {
         if (!id || !pwd) {
-            setMessage("아이디와 비밀번호를 입력하세요");
+            setMessage("아이디와 비밀번호를 입력해주세요");
             return;
         }
 
@@ -23,12 +23,11 @@ function Register() {
                 body: JSON.stringify({ id, pwd }),
             });
 
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
-            }
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
             const text = (await response.text()).trim();
-            if (text.includes("성공")) {
+            const isSuccess = text.includes("성공") || /success/i.test(text);
+            if (isSuccess) {
                 setMessage("회원가입 성공");
                 setIsLoggedIn(true);
                 setUserId(id);
@@ -43,7 +42,7 @@ function Register() {
     };
 
     return (
-        <Layout nextPath="/LoadPage">
+        <Layout>
             <h1>회원가입 페이지</h1>
             <div style={{ display: "flex", flexDirection: "column", gap: "8px", width: "200px" }}>
                 <input
@@ -67,4 +66,3 @@ function Register() {
 }
 
 export default Register;
-
