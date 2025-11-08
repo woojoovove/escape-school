@@ -7,7 +7,7 @@ function Login() {
     const [id, setId] = useState("");
     const [pwd, setPwd] = useState("");
     const [message, setMessage] = useState("");
-    const { setIsLoggedIn } = useGame();
+    const { setIsLoggedIn, setUserId } = useGame();
     const navigate = useNavigate();
 
     const handleLogin = async () => {
@@ -22,17 +22,16 @@ function Login() {
                 `http://localhost:8080/login?id=${encodeURIComponent(id)}&pwd=${encodeURIComponent(pwd)}`,
                 { method: "GET" }
             );
-
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
-            }
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
             const text = (await response.text()).trim();
+            const isSuccess = text.includes("성공") || /success/i.test(text);
 
-            if (text.includes("성공")) {
+            if (isSuccess) {
                 setIsLoggedIn(true);
+                setUserId(id);
                 setMessage("로그인 성공");
-                navigate("/1Class");
+                navigate("/LoadPage");
             } else {
                 setIsLoggedIn(false);
                 setMessage("로그인 실패");
@@ -45,7 +44,7 @@ function Login() {
     };
 
     return (
-        <Layout nextPath="/1Class">
+        <Layout>
             <h1>로그인 페이지</h1>
             <div style={{ display: "flex", flexDirection: "column", gap: "8px", width: "200px" }}>
                 <input
@@ -62,21 +61,13 @@ function Login() {
                 />
                 <button onClick={handleLogin}>로그인</button>
             </div>
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "8px",
-                    width: "100px",
-                    marginTop: "10px",
-                }}
-            >
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px", width: "100px", marginTop: "10px" }}>
                 <button onClick={() => (window.location.href = "/register")}>회원가입</button>
             </div>
-
             {message && <p style={{ marginTop: "10px" }}>{message}</p>}
         </Layout>
     );
 }
 
 export default Login;
+

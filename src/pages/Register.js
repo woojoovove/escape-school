@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
 import { useNavigate } from "react-router-dom";
+import { useGame } from "../context/GameContext";
 
 function Register() {
     const [id, setId] = useState("");
     const [pwd, setPwd] = useState("");
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
+    const { setIsLoggedIn, setUserId } = useGame();
 
     const handleRegister = async () => {
         if (!id || !pwd) {
@@ -28,7 +30,9 @@ function Register() {
             const text = (await response.text()).trim();
             if (text.includes("성공")) {
                 setMessage("회원가입 성공");
-                navigate("/1Class");
+                setIsLoggedIn(true);
+                setUserId(id);
+                navigate("/LoadPage");
             } else {
                 setMessage("회원가입 실패");
             }
@@ -39,7 +43,7 @@ function Register() {
     };
 
     return (
-        <Layout nextPath="/">
+        <Layout nextPath="/LoadPage">
             <h1>회원가입 페이지</h1>
             <div style={{ display: "flex", flexDirection: "column", gap: "8px", width: "200px" }}>
                 <input
@@ -63,3 +67,4 @@ function Register() {
 }
 
 export default Register;
+
