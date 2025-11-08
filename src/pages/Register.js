@@ -1,52 +1,46 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
-import { useGame } from "../context/GameContext";
 import { useNavigate } from "react-router-dom";
 
-function Login() {
+function Register() {
     const [id, setId] = useState("");
     const [pwd, setPwd] = useState("");
     const [message, setMessage] = useState("");
-    const { setIsLoggedIn } = useGame();
     const navigate = useNavigate();
 
-    const handleLogin = async () => {
+    const handleRegister = async () => {
         if (!id || !pwd) {
-            setIsLoggedIn(false);
             setMessage("아이디와 비밀번호를 입력하세요");
             return;
         }
 
         try {
-            const response = await fetch(
-                `http://localhost:8080/login?id=${encodeURIComponent(id)}&pwd=${encodeURIComponent(pwd)}`,
-                { method: "GET" }
-            );
+            const response = await fetch("http://localhost:8080/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id, pwd }),
+            });
 
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}`);
             }
 
             const text = (await response.text()).trim();
-
             if (text.includes("성공")) {
-                setIsLoggedIn(true);
-                setMessage("로그인 성공");
+                setMessage("회원가입 성공");
                 navigate("/1Class");
             } else {
-                setIsLoggedIn(false);
-                setMessage("로그인 실패");
+                setMessage("회원가입 실패");
             }
         } catch (error) {
             console.error(error);
-            setIsLoggedIn(false);
             setMessage("서버 연결 실패");
         }
     };
 
     return (
-        <Layout nextPath="/1Class">
-            <h1>로그인 페이지</h1>
+        <Layout nextPath="/">
+            <h1>회원가입 페이지</h1>
             <div style={{ display: "flex", flexDirection: "column", gap: "8px", width: "200px" }}>
                 <input
                     type="text"
@@ -60,18 +54,7 @@ function Login() {
                     value={pwd}
                     onChange={(e) => setPwd(e.target.value)}
                 />
-                <button onClick={handleLogin}>로그인</button>
-            </div>
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "8px",
-                    width: "100px",
-                    marginTop: "10px",
-                }}
-            >
-                <button onClick={() => (window.location.href = "/register")}>회원가입</button>
+                <button onClick={handleRegister}>회원가입</button>
             </div>
 
             {message && <p style={{ marginTop: "10px" }}>{message}</p>}
@@ -79,4 +62,4 @@ function Login() {
     );
 }
 
-export default Login;
+export default Register;

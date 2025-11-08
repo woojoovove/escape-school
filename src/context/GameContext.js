@@ -7,7 +7,8 @@ export function GameProvider({ children }) {
     // 🔸 전역 상태들
     const [items, setItems] = useState([]);
     const [roomNumber, setRoomNumber] = useState(1);
-
+    // 로그인 여부
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     // 🔹 인벤토리 조작 함수
     const addItem = (item) => setItems((prev) => [...prev, item]);
     const removeItem = (item) => setItems((prev) => prev.filter((i) => i !== item));
@@ -28,6 +29,8 @@ export function GameProvider({ children }) {
                 setRoomNumber,
                 moveToNextRoom,
                 resetRoom,
+                isLoggedIn,
+                setIsLoggedIn,
             }}
         >
             {children}
