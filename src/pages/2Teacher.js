@@ -202,14 +202,30 @@ function Teacher() {
                                         {opened ? "열림" : "🔒"}
                                     </button>
                                 ) : (
-                                    !isMemo && idx + 1
+                                    !isMemo && (
+                                        <button
+                                            onClick={handleBoardMemo}
+                                            style={{
+                                                position: "absolute",
+                                                top: 8,
+                                                right: 10,
+                                                background: "none",
+                                                border: "none",
+                                                cursor: "pointer",
+                                                fontSize: 22,
+                                            }}
+                                            title="칠판 메모 보기"
+                                        >
+                                            📝
+                                        </button>
+                                    )
                                 )}
                             </div>
                         );
                     })}
                 </div>
 
-                <div style={{ flex: 1.4, display: "flex", flexDirection: "column", gap: 16 }}>
+                <div style={{flex: 1.4, display: "flex", flexDirection: "column", gap: 16}}>
                     <div
                         style={{
                             flex: 1,
@@ -227,21 +243,6 @@ function Teacher() {
                             position: "relative",
                         }}
                     >
-                        <button
-                            onClick={handleBoardMemo}
-                            style={{
-                                position: "absolute",
-                                top: 8,
-                                right: 10,
-                                background: "none",
-                                border: "none",
-                                cursor: "pointer",
-                                fontSize: 22,
-                            }}
-                            title="칠판 메모 보기"
-                        >
-                            📝
-                        </button>
                         {boardContent}
                     </div>
 
