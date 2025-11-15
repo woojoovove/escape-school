@@ -62,7 +62,7 @@ function Class() {
             const res = await fetch(url, { method: "GET" });
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const text = (await res.text()).trim();
-            if (text.includes("성공")) {
+            if (text.includes("정답")) {
                 setIsUnlocked(true);
                 addItem("교실 열쇠");
                 setShowModal(false);

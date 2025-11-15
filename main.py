@@ -10,6 +10,11 @@ Inventory = set()
 
 TIMER_FILE = "time_save.json"
 
+#global quiz_class 
+global quiz_office
+global quiz_science
+    
+
 try:
     with open("save_file.json", "r", encoding="utf-8") as f:
         json.load(f)
@@ -43,7 +48,7 @@ all_room = {
 
 class WedRequestHandler(BaseHTTPRequestHandler):
     num = 1
-    
+
     def sort_hint (a):
         order_by=sorted(a,reverse=False)
         return order_by
@@ -235,16 +240,16 @@ class WedRequestHandler(BaseHTTPRequestHandler):
             Inventory.clear()
             
             if login_data[user_id][query_params["save_slots"][0]] == 0 or 1:
-                data = f"교실로 이동합니다        {qize_science}"
+                data = f"교실로 이동합니다"
                 self.wfile.write (data.encode('utf-8'))
             elif login_data[user_id][query_params["save_slots"][0]] ==2:
-                data = f"교무실로 이동합니다      {qize_science}"
+                data = f"교무실로 이동합니다"
                 self.wfile.write (data.encode('utf-8'))
             elif login_data[user_id][query_params["save_slots"][0]] == 3:
-                data = f"과학실로 이동합니다      {qize_science}"
+                data = f"과학실로 이동합니다"
                 self.wfile.write (data.encode('utf-8'))
             elif login_data[user_id][query_params["save_slots"][0]] == 4:
-                data = f"출구로 이동합니다        {qize_science}"
+                data = f"출구로 이동합니다"
                 self.wfile.write (data.encode('utf-8'))
                 
         
@@ -277,9 +282,11 @@ class WedRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write (data.encode('utf-8'))
 
         if parsed.path == "/make_quiz_class":
+            global quiz_class 
             quiz_class = [random.randint(1, 9) for _ in range(4)]
             quiz_class = "".join(str(num) for num in quiz_class)
             data = quiz_class
+            print(data)
             self.wfile.write (data.encode('utf-8'))
         
         if parsed.path == "/make_quiz_science":
