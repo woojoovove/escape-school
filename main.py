@@ -1,4 +1,4 @@
-from http.server import HTTPServer,BaseHTTPRequestHandler
+﻿from http.server import HTTPServer,BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 import json
 import random
@@ -376,77 +376,164 @@ dict = {
 
 }
 '''
-        if parsed.path =="/get_rank":
-            with open("save_time.json", "r", encoding='utf-8') as f:
-                dict = json.load(f)
+        # if parsed.path == "/get_ranking":
+        #     with open("save_time.json", "r", encoding='utf-8') as f:
+        #         global dict 
+        #         dict = json.load(f)
         
         
-            rank_result={
+        #     rank_result={
 
-            }
-            array=[]   #공동 순위가 있음을 알 수 있게 하기 위해 사용함
-            rank = []
-            ID=[]
-            k=1
-            j=0
-            rp=""
-            cnt=1
-            # 시, 분, 초 00:01:11을 초로 변환 및 저장
-            for key, value in dict.items():
-                h_str, m_str, s_str = value.split(':')
-                hours = int(h_str)
-                minutes = int(m_str)
-                seconds = int(s_str)
+        #     }
+        #     times = []
+        #     array=[]   #공동 순위가 있음을 알 수 있게 하기 위해 사용함
+        #     rank = []
+        #     ID=[]
+        #     k=1
+        #     j=0
+        #     rp=""
+        #     cnt=1
+        #     # 시, 분, 초 00:01:11을 초로 변환 및 저장
+        #     for key, value in dict.items():
+        #         # 시간 형식 검증
+        #         parts = value.split(':')
+        #         if len(parts) != 3:
+        #             print(f"[WARNING] 잘못된 시간 형식: {key}: {value} → 건너뜀")
+        #             continue
 
-                total_seconds = (hours * 3600) + (minutes * 60) + seconds
-                rank.append([total_seconds,1])
-                array.append(total_seconds)
-                ID.append(key)
-            # print(f"총 초: {total_seconds}초")
+        #         h_str, m_str, s_str = parts
+        #         hours = int(h_str)
+        #         minutes = int(m_str)
+        #         seconds = int(s_str)
 
-            array.sort()
+        #         total_seconds = (hours * 3600) + (minutes * 60) + seconds
+        #         times.append((total_seconds, key, value))
 
-            #랭킹 구하기 (순위)
-            for i in range(len(ID)):
-                for j in range(len(ID)):
-                    if rank[i][0]<rank[j][0]:
-                        rank[j][1]+=1
+        #     # print(f"총 초: {total_seconds}초")
 
-            j=0
-            while True:
-                if (k>=10 or j>=10):
+        #     array.sort()
+
+        #     #랭킹 구하기 (순위)
+        #     for i in range(len(ID)):
+        #         for j in range(len(ID)):
+        #             if rank[i][0]<rank[j][0]:
+        #                 rank[j][1]+=1
+
+        #     j=0
+        #     while True:
+        #         if (k>=10 or j>=10):
+        #             break
+
+        #         for i in range(len(ID)):
+        #             if (k >= 10 or j>=10):
+        #                 #print(k)
+        #                 break
+
+        #             if (rank[i][0]==array[j]):
+        #                 name_id=ID[i]  #그 순위에 있는 id 저장
+
+
+        #                 if rp==array[j]:
+        #                     rank_result[f'공동{rank[i][1]}위-{cnt}'] = {"time": dict[name_id], "id": name_id}
+        #                     cnt+=1
+
+        #                 else:
+        #                     rank_result[f'{rank[i][1]}위']={"time":dict[name_id],"id":name_id}
+        #                     k += 1
+        #                     cnt=1
+
+        #                 rp = array[j]
+                    
+        #             else:
+        #                 continue
+
+        #             j+=1
+
+        #     #print(rank_result,"@@")
+
+
+        #     with open('save_rank.json', 'w', encoding='utf-8') as f:
+        #         json.dump(rank_result, f, ensure_ascii=False, indent=4)
+            
+        #     print(rank_result)
+        #     self.wfile.write (json.dumps(rank_result).encode('utf-8'))
+            
+        if parsed.path == "/get_ranking":
+
+            # 시간 파일 읽기
+            try:
+                with open("save_time.json", "r", encoding="utf-8") as f:
+                    time_dict = json.load(f)
+            except:
+                time_dict = {}
+
+            times = []
+
+            # 시간 파싱
+            for user_id, time_str in time_dict.items():
+
+                parts = time_str.split(':')
+                if len(parts) != 3:
+                    print(f"[WARNING] 잘못된 시간 형식: {user_id}: {time_str} → 건너뜀")
+                    continue
+
+                h, m, s = parts
+                total = int(h) * 3600 + int(m) * 60 + int(s)
+
+                times.append((total, user_id, time_str))
+
+            # 정렬 (시간 적은 순)
+            times.sort(key=lambda x: x[0])
+
+            rank_result = {}
+            prev_total = None
+            rank = 1
+            same_count = 1
+            printed = 0
+
+            for total, user_id, time_str in times:
+                if printed >= 10:
                     break
 
-                for i in range(len(ID)):
-                    if (k >= 10 or j>=10):
-                        #print(k)
-                        break
+                if total == prev_total:
+                    key = f"공동{rank}위-{same_count}"
+                    same_count += 1
+                else:
+                    key = f"{rank}위"
+                    same_count = 1
+                    rank += 1
 
-                    if (rank[i][0]==array[j]):
-                        name_id=ID[i]  #그 순위에 있는 id 저장
+                rank_result[key] = {"time": time_str, "id": user_id}
 
+                prev_total = total
+                printed += 1
 
-                        if rp==array[j]:
-                            rank_result[f'공동{rank[i][1]}위-{cnt}'] = {"time": dict[name_id], "id": name_id}
-                            cnt+=1
-
-                        else:
-                            rank_result[f'{rank[i][1]}위']={"time":dict[name_id],"id":name_id}
-                            k += 1
-                            cnt=1
-
-                        rp = array[j]
-                    
-                    else:
-                        continue
-
-                    j+=1
-
-            #print(rank_result,"@@")
-
-
+            # JSON 저장
             with open('save_rank.json', 'w', encoding='utf-8') as f:
                 json.dump(rank_result, f, ensure_ascii=False, indent=4)
+
+            self.wfile.write(json.dumps(rank_result).encode('utf-8'))
+
+
+        if parsed.path == "/save_time":
+            user_id = query_params.get("id")[0]
+            user_time = query_params.get("time")[0]
+            print(user_id)
+            print(user_time)
+
+            try:
+                with open("save_time.json", "r", encoding='utf-8') as f:
+                    time_data = json.load(f)
+            except (FileNotFoundError, json.JSONDecodeError):
+                time_data = {}
+
+            time_data[user_id] = user_time
+
+            with open("save_time.json", "w", encoding='utf-8') as f:
+                json.dump(time_data, f, ensure_ascii=False, indent=4)
+
+            data = "시간 저장 완료"
+            self.wfile.write(data.encode('utf-8'))
 
             
 
