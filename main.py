@@ -302,6 +302,7 @@ class WedRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(data.encode('utf-8'))
 
         if parsed.path == "/make_quiz_science":
+            global n
             n = random.randint(1, 20)
             
             def fibonacci_number(k): 
@@ -319,7 +320,7 @@ class WedRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write (data.encode('utf-8'))
 
 
-        if parsed.path == "/quiz_class":
+        if parsed.path == "/make_quiz_class":
 
             class_answer = query_params.get("class_answer", [None])[0]
             print("사용자 입력:", class_answer)
@@ -333,8 +334,8 @@ class WedRequestHandler(BaseHTTPRequestHandler):
 
         if parsed.path == "/quiz_science":
             
+            global science_answer 
             science_answer = query_params.get("science_answer", [None])[0]
-            print(n)
             print(science_answer)
             if n == int(science_answer):
                 data = "정답"
