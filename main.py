@@ -209,6 +209,7 @@ class WedRequestHandler(BaseHTTPRequestHandler):
                 self.wfile.write (data.encode('utf-8'))
                 
         #======================================
+        #NextButton을 누를 때마다 현재 방 번호를 파일에 저장한다.
         if parsed.path == "/game_save":
             with open("save_file.json","r")as f:
                 login_data=json.load(f)
