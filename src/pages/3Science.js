@@ -1,6 +1,8 @@
 ﻿import React, { useEffect, useMemo, useRef, useState } from "react";
 import Layout from "../components/Layout";
 import { useGame } from "../context/GameContext";
+import fibonacciImg from '../img/fibonacci.png';
+import scienceImg from '../img/science.jpg';
 import fibonacciImg from "../img/fibonacci.png";
 
 import ghostImg from "../img/ghost.jpg";
@@ -171,9 +173,17 @@ function Science() {
                             alignItems: "center",
                             justifyContent: "center",
                             color: "#241a10",
+                            overflow: "hidden",
                         }}
                     >
-                        <span style={{ fontWeight: 700 }}>실험중인 책상</span>
+                        <img src={scienceImg} style={{
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover", // div를 꽉 채우면서 비율 유지
+                        }}></img>
                     </div>
                 </div>
 
@@ -198,11 +208,11 @@ function Science() {
                                 }}
                                 title={isPuzzle ? (solved ? "퍼즐 해결" : "클릭하여 퍼즐 시작") : "장식장"}
                             >
-                                
+
                                 {idx === 0 && (
                                     <span>{quizText}</span>
                                 )}
-                                
+
                                 {idx === 1 && (solved ? "퍼즐 해결됨" : "퍼즐 장식장")}
                                 {idx === 2 && <img src={fibonacciImg} height={80} ></img>}
                             </div>
