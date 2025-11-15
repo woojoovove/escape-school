@@ -42,22 +42,22 @@ function Science() {
     };
 
     const pressNumber = (n) => {
-        if (solved) return;
-        const next = [...inputSeq, n];
-        // 진행 중 검증: 처음부터 일치해야 함
-        const okSoFar = next.every((v, i) => v === correctSeq[i]);
-        if (!okSoFar) {
-            // 틀리면 리셋
+    if (solved) return;
+    setInputSeq(prev => [...prev, n]);
+    };
+
+    const handleSubmit = () => {
+        const isCorrect = inputSeq.every((v, i) => v === correctSeq[i]);
+        if (!isCorrect) {
+            alert("틀렸습니다. 다시 시도하세요.");
             setInputSeq([]);
             return;
         }
-        setInputSeq(next);
-        if (next.length === correctSeq.length) {
-            setSolved(true);
-            setShowKeypad(false);
-            addItem("마스터 키");
-            alert("정답입니다! 마스터 키를 얻었습니다.");
-        }
+
+        setSolved(true);
+        setShowKeypad(false);
+        addItem("마스터 키");
+        alert("정답입니다! 마스터 키를 얻었습니다.");
     };
 
     useEffect(() => {
@@ -206,6 +206,9 @@ function Science() {
                         </div>
                         <div style={{ display: "flex", justifyContent: "flex-end" }}>
                             <button onClick={() => setInputSeq([])}>지우기</button>
+                            <button onClick={handleSubmit} style={{ background: "#4caf50", color: "white", padding: "6px 12px", borderRadius: 4 }}>
+        제출
+    </button>
                         </div>
                     </div>
                 </div>
