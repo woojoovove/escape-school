@@ -1,7 +1,9 @@
-﻿import React, { useMemo, useState, useEffect } from "react";
+﻿import React, { useEffect, useMemo, useRef, useState } from "react";
 import Layout from "../components/Layout";
 import { useGame } from "../context/GameContext";
-import fibonacciImg from '../img/fibonacci.png';
+import fibonacciImg from "../img/fibonacci.png";
+
+import ghostImg from "../img/ghost.jpg";
 
 function Science() {
     const { addItem, items } = useGame();
@@ -20,6 +22,8 @@ function Science() {
     const [showKeypad, setShowKeypad] = useState(false);
     const [inputSeq, setInputSeq] = useState([]);
     const [solved, setSolved] = useState(hasMaster);
+    const [showGhost, setShowGhost] = useState(false);
+    const ghostTimerRef = useRef(null);
 
     const [quizLoading, setQuizLoading] = useState(true);
     const [quizText, setQuizText] = useState("")
@@ -53,30 +57,51 @@ function Science() {
     };
 
 
+    const maybeShowGhost = () => {
+
+        if (Math.random() <= 0.3) {
+
+            if (ghostTimerRef.current) clearTimeout(ghostTimerRef.current);
+
+            setShowGhost(true);
+
+            ghostTimerRef.current = setTimeout(() => {
+                setShowGhost(false)
+                alert("틀렸습니다. 다시 시도해 보세요.");
+            },
+            1500);
+
+        } else{
+            alert("틀렸습니다. 다시 시도해 보세요.");
+        }
+
+    };
+
+
+
     const checkScienceAnswer = async (answer) => {
         try {
             const url = `http://localhost:8080/quiz_science?science_answer=${encodeURIComponent(answer)}`;
-
             const res = await fetch(url, { method: "GET" });
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-            const text = (await res.text()).trim(); // "정답" 또는 "오답"
+            const text = (await res.text()).trim();
 
             if (text === "정답") {
-                alert("🎉 과학문제 정답입니다!");
+                alert("정답입니다! 마스터 키를 획득했습니다.");
                 addItem("마스터 키");
-
-                setShowKeypad(false)
-            } else if (text === "오답") {
-                alert("❌ 오답입니다. 다시 시도하세요.");
+                setShowKeypad(false);
+            } else if (text === "실패") {
+                maybeShowGhost();
             } else {
-                alert("⚠️ 서버 응답이 올바르지 않습니다: " + text);
+                maybeShowGhost();
             }
 
             return text;
         } catch (e) {
             console.error(e);
-            alert("서버 오류가 발생했습니다.");
+            alert("네트워크 오류가 발생했습니다.");
+            maybeShowGhost();
             return null;
         }
     };
@@ -130,7 +155,7 @@ function Science() {
                     >
                         <span style={{ fontWeight: 700, color: "#0e3a5a" }}>유리 장식장</span>
                         {/* 장식장 내부 아이콘 힌트 */}
-                        <span style={{ position: "absolute", right: 12, bottom: 10, fontSize: 18, opacity: 0.85 }}>🪓</span>
+                        <span style={{ position: "absolute", right: 12, bottom: 10, fontSize: 18, opacity: 0.85 }}>??</span>
                     </div>
 
                     {/* 과학 실험중 책상 */}
@@ -237,8 +262,24 @@ function Science() {
                     </div>
                 </div>
             )}
+            {showGhost && (
+                <div
+                    style={{
+                        position: "fixed",
+                        inset: 0,
+                        background: "rgba(0,0,0,0.65)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        zIndex: 2000,
+                    }}
+                >
+                    <img src={ghostImg} alt="Ghost" style={{ maxWidth: "60%", maxHeight: "60%", objectFit: "contain" }} />
+                </div>
+            )}
         </Layout>
     );
 }
 
 export default Science;
+

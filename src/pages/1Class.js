@@ -1,6 +1,7 @@
-﻿import { useEffect, useState } from "react";
+﻿import { useEffect, useRef, useState } from "react";
 import Layout from "../components/Layout";
 import { useGame } from "../context/GameContext";
+import ghostImg from "../img/ghost.jpg";
 
 function Class() {
     const { addItem } = useGame();
@@ -11,6 +12,8 @@ function Class() {
     const [quiz, setQuiz] = useState("");
     const [quizLoading, setQuizLoading] = useState(true);
     const [quizError, setQuizError] = useState("");
+    const [showGhost, setShowGhost] = useState(false);
+    const ghostTimerRef = useRef(null);
 
     const rows = 3;
     const cols = 6;
@@ -49,6 +52,39 @@ function Class() {
         };
     }, []);
 
+    const maybeShowGhost = () => {
+
+        if (Math.random() <= 0.3) {
+
+            if (ghostTimerRef.current) clearTimeout(ghostTimerRef.current);
+
+            setShowGhost(true);
+
+            ghostTimerRef.current = setTimeout(() => {
+                setShowGhost(false);
+                alert("오답입니다. 다시 시도해주세요.");
+            },
+             1500);
+
+        } else{
+                alert("오답입니다. 다시 시도해주세요.");
+        }
+    };
+
+
+
+    useEffect(() => {
+
+        return () => {
+
+            if (ghostTimerRef.current) clearTimeout(ghostTimerRef.current);
+
+        };
+
+    }, []);
+
+
+
     const submitAnswer = async () => {
         if (submitting) return;
         const trimmed = answer.trim();
@@ -68,7 +104,8 @@ function Class() {
                 setShowModal(false);
                 setAnswer("");
             } else {
-                alert("정답이 아닙니다.");
+                maybeShowGhost();
+                
             }
         } catch (e) {
             console.error(e);
@@ -187,6 +224,21 @@ function Class() {
                             </button>
                         </div>
                     </div>
+                </div>
+            )}
+            {showGhost && (
+                <div
+                    style={{
+                        position: "fixed",
+                        inset: 0,
+                        background: "rgba(0,0,0,0.65)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        zIndex: 2000,
+                    }}
+                >
+                    <img src={ghostImg} alt="Ghost" style={{ maxWidth: "60%", maxHeight: "60%", objectFit: "contain" }} />
                 </div>
             )}
         </Layout>
