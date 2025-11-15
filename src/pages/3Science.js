@@ -65,8 +65,8 @@ function Science() {
 
             if (text === "정답") {
                 alert("🎉 과학문제 정답입니다!");
-                addItem("마스터키");
-                setLockerUnlocked(true);
+                addItem("마스터 키");
+
                 setShowKeypad(false)
             } else if (text === "오답") {
                 alert("❌ 오답입니다. 다시 시도하세요.");
@@ -106,7 +106,7 @@ function Science() {
     }, []);
 
     return (
-        <Layout nextPath="/6Ending">
+        <Layout nextPath="/4Ghost">
             <h1 style={{ marginBottom: 16 }}>과학실</h1>
 
             <div style={{ display: "flex", gap: 16, width: "100%", maxWidth: 1100 }}>
