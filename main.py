@@ -282,12 +282,15 @@ class WedRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write (data.encode('utf-8'))
 
         if parsed.path == "/make_quiz_class":
-            global quiz_class 
-            quiz_class = [random.randint(1, 9) for _ in range(4)]
-            quiz_class = "".join(str(num) for num in quiz_class)
-            data = quiz_class
+            global quiz_class_question 
+            global quiz_class_answer
+            quiz_class_question = [random.randint(1, 9) for _ in range(4)]
+            quiz_class_answer = quiz_class_question
+            random.shuffle(quiz_class_answer)
+            quiz_class_answer = "".join(str(num) for num in quiz_class_answer)
+            data = "".join(str(num) for num in quiz_class_question)
             print(data)
-            self.wfile.write (data.encode('utf-8'))
+            self.wfile.write(data.encode('utf-8'))
         
         if parsed.path == "/make_quiz_science":
             n = random.randint(1, 20)
@@ -308,11 +311,11 @@ class WedRequestHandler(BaseHTTPRequestHandler):
 
 
         if parsed.path == "/quiz_class":
-            print(quiz_class)
+            print(quiz_class_answer)
             class_answer = query_params.get("class_answer", [None])[0]
             print(class_answer)
             
-            if quiz_class == class_answer:
+            if quiz_class_answer == class_answer:
                 data = "정답"
                 self.wfile.write (data.encode('utf-8'))
             else:
