@@ -54,7 +54,7 @@ const resolveDestination = (roomValue, fallbackText = "") => {
 };
 
 function LoadPage() {
-    const { isLoggedIn, userId, refreshInventory, startPlayTimer } = useGame();
+    const { isLoggedIn, userId, refreshInventory, startPlayTimer, setSaveNumber } = useGame();
     const [message, setMessage] = useState("");
     const [loadingSlot, setLoadingSlot] = useState(null);
     const navigate = useNavigate();
@@ -67,6 +67,7 @@ function LoadPage() {
 
         try {
             setLoadingSlot(slot);
+            setSaveNumber(slot);
             const url = `http://localhost:8080/save_load?id=${encodeURIComponent(userId)}&save_slots=${encodeURIComponent(slot)}`;
             const res = await fetch(url, { method: "GET" });
             if (!res.ok) throw new Error(`HTTP ${res.status}`);

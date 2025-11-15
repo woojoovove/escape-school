@@ -6,11 +6,10 @@ import { useGame } from "../context/GameContext";
 function NextButton({ nextPath }) {
     const navigate = useNavigate();
     const location = useLocation();
-    const { isLoggedIn, items, roomNumber, userId } = useGame();
+    const { isLoggedIn, items, roomNumber, userId, saveNumber} = useGame();
 
     const [canProceed, setCanProceed] = useState(false);
     const [checking, setChecking] = useState(false);
-    const [showChoice, setShowChoice] = useState(false);
 
     const hiddenOn = new Set(["/", "/register", "/LoadPage", "/5Ending", "/4Exit"]);
     const isHidden = hiddenOn.has(location.pathname);
@@ -39,14 +38,14 @@ function NextButton({ nextPath }) {
 
     if (isHidden) return null;
 
-    const gameSaveAndGo = async () => {
+    const gameSaveAndGo = () => {
         try {
             if (userId) {
-                const url = `http://localhost:8080/game_save?id=${encodeURIComponent(userId)}&save_slots=1`;
-                await fetch(url, { method: 'GET' });
+                const url = `http://localhost:8080/game_save?id=${encodeURIComponent(userId)}&save_slots=${encodeURIComponent(saveNumber)}&room_num=${encodeURIComponent(roomNumber)}`;
+                fetch(url, { method: 'GET' });
             }
-        } catch (_) {
-            // ignore save errors
+        } catch (e) {
+            console.log(e);
         } finally {
             navigate(nextPath);
         }
@@ -77,7 +76,6 @@ function NextButton({ nextPath }) {
                             alert("조건을 만족하지 않아 이동할 수 없습니다.");
                             return;
                         }
-                        setShowChoice(true);
                         gameSaveAndGo();
                     }}
                     style={{
