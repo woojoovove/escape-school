@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+﻿import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { useGame } from "../context/GameContext";
 
@@ -7,6 +7,10 @@ function Class() {
     const [showModal, setShowModal] = useState(false);
     const [answer, setAnswer] = useState("");
     const [isUnlocked, setIsUnlocked] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
+    const [quiz, setQuiz] = useState("");
+    const [quizLoading, setQuizLoading] = useState(true);
+    const [quizError, setQuizError] = useState("");
 
     const rows = 3;
     const cols = 6;
@@ -19,14 +23,58 @@ function Class() {
         }
     };
 
-    const submitAnswer = () => {
-        if (answer.trim() === "14") {
-            setIsUnlocked(true);
-            addItem("교실 열쇠");
-            setShowModal(false);
-            setAnswer("");
-        } else {
-            alert("정답이 아닙니다.");
+    useEffect(() => {
+        let aborted = false;
+        const fetchQuiz = async () => {
+            try {
+                setQuizLoading(true);
+                setQuizError("");
+                const res = await fetch("http://localhost:8080/make_quiz_class", { method: "GET" });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const text = (await res.text()).trim();
+                if (!aborted) setQuiz(text);
+            } catch (e) {
+                console.error(e);
+                if (!aborted) {
+                    setQuiz("");
+                    setQuizError("문제를 불러오지 못했습니다.");
+                }
+            } finally {
+                if (!aborted) setQuizLoading(false);
+            }
+        };
+        fetchQuiz();
+        return () => {
+            aborted = true;
+        };
+    }, []);
+
+    const submitAnswer = async () => {
+        if (submitting) return;
+        const trimmed = answer.trim();
+        if (!trimmed) {
+            alert("답안을 입력해주세요.");
+            return;
+        }
+        try {
+            setSubmitting(true);
+            const url = `http://localhost:8080/quiz_class?class_answer=${encodeURIComponent(trimmed)}`;
+            const res = await fetch(url, { method: "GET" });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const text = (await res.text()).trim();
+            if (text.includes("성공")) {
+                setIsUnlocked(true);
+                addItem("교실 열쇠");
+                setShowModal(false);
+                setAnswer("");
+            } else {
+                alert("정답이 아닙니다.");
+            }
+        } catch (e) {
+            console.error(e);
+            alert("통신 중 오류가 발생했습니다.");
+        } finally {
+            setSubmitting(false);
         }
     };
 
@@ -52,7 +100,12 @@ function Class() {
                     fontWeight: 700,
                 }}
             >
-                게시판 7 × 2 = ?
+                {quizLoading
+                    ? "문제를 불러오는 중..."
+                    : quizError
+                    ? quizError
+                    : `교실에서 찾은 쪽지에는 ${quiz.split("").join(" ")} 라고 적혀 있다.`
+                }
             </div>
 
             {/* 사물함 6 x 3 */}
@@ -129,7 +182,9 @@ function Class() {
                         />
                         <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
                             <button onClick={() => setShowModal(false)}>취소</button>
-                            <button onClick={submitAnswer}>확인</button>
+                            <button onClick={submitAnswer} disabled={submitting}>
+                                {submitting ? "확인중" : "확인"}
+                            </button>
                         </div>
                     </div>
                 </div>
