@@ -98,8 +98,6 @@ function NextButton({ nextPath }) {
                     {checking ? "확인중" : "다음으로"}
                 </button>
             </div>
-
-        
         </>
     );
 }
