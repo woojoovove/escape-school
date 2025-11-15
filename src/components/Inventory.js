@@ -1,11 +1,16 @@
-// src/components/Inventory.js
+﻿// src/components/Inventory.js
 import classroomKey from "../img/classroom_key.png";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useState, useCallback } from "react";
+import { useGame } from "../context/GameContext";
 
 const iconMap = {
     "교실 열쇠": classroomKey,
 };
 
+
 function Inventory({ items }) {
+
     return (
         <div
             style={{
@@ -22,7 +27,7 @@ function Inventory({ items }) {
             }}
         >
             {items.length === 0 ? (
-                <span>인벤토리가 비어있습니다.</span>
+                <span>인벤토리가 비었습니다.</span>
             ) : (
                 items.map((item, i) => {
                     const icon = iconMap[item];
@@ -39,4 +44,3 @@ function Inventory({ items }) {
 }
 
 export default Inventory;
-
