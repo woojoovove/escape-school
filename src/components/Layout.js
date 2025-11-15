@@ -3,7 +3,6 @@ import { useLocation } from "react-router-dom";
 import { useGame } from "../context/GameContext";
 import Inventory from "./Inventory";
 import NextButton from "./NextButton";
-import HintGuestbook from "./HintGuestbook";
 
 function Layout({ children, nextPath }) {
     const location = useLocation();
@@ -31,7 +30,6 @@ function Layout({ children, nextPath }) {
                 flexDirection: "column",
             }}
         >
-            {!isHidden && <HintGuestbook />}
             <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", maxWidth: 1100, margin: "0 auto", padding: 16 }}>
                 {!isHidden && <h2 style={{ alignSelf: "flex-start", marginBottom: 12 }}>현재 방 번호: {roomNumber}</h2>}
                 {children}

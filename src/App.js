@@ -9,7 +9,6 @@ import Science from "./pages/3Science";
 import Ghost from "./pages/4Ghost";
 import Exit from "./pages/5Exit";
 import Ending from "./pages/6Ending";
-import HintForm from "./pages/HintForm";
 import LoadPage from "./pages/LoadPage";
 
 function ProtectedRoute({ children }) {
@@ -32,7 +31,6 @@ function App() {
             <Route path="/4Ghost" element={<ProtectedRoute><Ghost /></ProtectedRoute>} />
             <Route path="/5Exit" element={<ProtectedRoute><Exit /></ProtectedRoute>} />
             <Route path="/6Ending" element={<ProtectedRoute><Ending /></ProtectedRoute>} />
-            <Route path="/HintForm" element={<ProtectedRoute><HintForm /></ProtectedRoute>} />
         </Routes>
     );
 }

@@ -52,25 +52,6 @@ function NextButton({ nextPath }) {
         }
     };
 
-    const choiceModal = (
-        <div
-            onClick={() => setShowChoice(false)}
-            style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.4)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}
-        >
-            <div
-                onClick={(e) => e.stopPropagation()}
-                style={{ background: "white", padding: 18, borderRadius: 10, width: 360, boxShadow: "0 10px 24px rgba(0,0,0,0.25)", display: "flex", flexDirection: "column", gap: 10 }}
-            >
-                <h3 style={{ margin: 0 }}>힌트를 남길까요?</h3>
-                <div style={{ fontSize: 13, color: "#555" }}>아이디와 현재 방 정보가 함께 저장됩니다.</div>
-                <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
-                    <button onClick={() => setShowChoice(false)}>취소</button>
-                    <button onClick={() => navigate(`/HintForm?room=${roomNumber}&next=${encodeURIComponent(nextPath)}`)}>남길래요</button>
-                    <button onClick={() => gameSaveAndGo()}>넘어갈래요</button>
-                </div>
-            </div>
-        </div>
-    );
 
     return (
         <>
@@ -97,6 +78,7 @@ function NextButton({ nextPath }) {
                             return;
                         }
                         setShowChoice(true);
+                        gameSaveAndGo();
                     }}
                     style={{
                         padding: "14px 18px",
@@ -117,7 +99,7 @@ function NextButton({ nextPath }) {
                 </button>
             </div>
 
-            {showChoice && createPortal(choiceModal, document.body)}
+        
         </>
     );
 }
