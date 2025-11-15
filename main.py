@@ -275,7 +275,7 @@ class WedRequestHandler(BaseHTTPRequestHandler):
                 quiz_office = "13 * 15"    
 
             elif quiz_office == 4:
-                quiz_num = 13 / 15
+                quiz_num = 13 % 15
                 quiz_office = "13 % 15"      
             
             data = quiz_office
