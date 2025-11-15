@@ -9,7 +9,7 @@ function Exit() {
     const hasAxe = items.includes("도끼");
     const checkAxe = () => {
         if (hasAxe) {
-            alert("도끼로 문을 부숩니다.");
+            window.location.href = "/6Ending"
         } else {
             alert("도끼가 필요합니다.")
         }
