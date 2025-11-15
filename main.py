@@ -218,15 +218,11 @@ class WedRequestHandler(BaseHTTPRequestHandler):
             room_num = query_params["room_num"][0]
             save_slots = str(query_params["save_slots"][0])
 
-            print(user_id)
-            print(room_num)
-            print(save_slots)
-
-            db[user_id][save_slots][room_num]=room_num
+            db[user_id][save_slots]["room_num"]=room_num
             data = f"{save_slots}번 슬롯에 저장됨"
             self.wfile.write (data.encode('utf-8'))
             with open("save_file.json", "w")as f:
-                    json.dump(login_data,f, ensure_ascii=False)
+                    json.dump(db,f, ensure_ascii=False)
                     
 
         #=============================================
