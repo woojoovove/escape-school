@@ -54,7 +54,7 @@ const resolveDestination = (roomValue, fallbackText = "") => {
 };
 
 function LoadPage() {
-    const { isLoggedIn, userId, refreshInventory } = useGame();
+    const { isLoggedIn, userId, refreshInventory, startPlayTimer } = useGame();
     const [message, setMessage] = useState("");
     const [loadingSlot, setLoadingSlot] = useState(null);
     const navigate = useNavigate();
@@ -85,8 +85,6 @@ function LoadPage() {
                 "저장 데이터를 불러왔습니다";
             setMessage(displayMessage);
 
-            await refreshInventory();
-
             let destination =
                 parsed?.next_path ||
                 resolveDestination(
@@ -99,6 +97,7 @@ function LoadPage() {
             }
 
             if (destination) {
+                startPlayTimer();
                 navigate(destination);
             }
         } catch (e) {

@@ -7,7 +7,7 @@ function Login() {
     const [id, setId] = useState("");
     const [pwd, setPwd] = useState("");
     const [message, setMessage] = useState("");
-    const { setIsLoggedIn, setUserId } = useGame();
+    const { setIsLoggedIn, setUserId, startPlayTimer } = useGame();
     const navigate = useNavigate();
 
     const handleLogin = async () => {
@@ -30,6 +30,7 @@ function Login() {
             if (isSuccess) {
                 setIsLoggedIn(true);
                 setUserId(id);
+                startPlayTimer();
                 setMessage("로그인 성공");
                 navigate("/LoadPage");
             } else {
