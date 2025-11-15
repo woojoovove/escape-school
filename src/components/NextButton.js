@@ -6,7 +6,7 @@ import { useGame } from "../context/GameContext";
 function NextButton({ nextPath }) {
     const navigate = useNavigate();
     const location = useLocation();
-    const { isLoggedIn, items, roomNumber, userId } = useGame();
+    const { isLoggedIn, items, roomNumber, userId, saveNumber} = useGame();
 
     const [canProceed, setCanProceed] = useState(false);
     const [checking, setChecking] = useState(false);
@@ -42,7 +42,7 @@ function NextButton({ nextPath }) {
     const gameSaveAndGo = async () => {
         try {
             if (userId) {
-                const url = `http://localhost:8080/game_save?id=${encodeURIComponent(userId)}&save_slots=1`;
+                const url = `http://localhost:8080/game_save?id=${encodeURIComponent(userId)}&save_slots=${encodeURIComponent(saveNumber)}&room_num=${encodeURIComponent(roomNumber)}`;
                 await fetch(url, { method: 'GET' });
             }
         } catch (_) {
