@@ -1,13 +1,14 @@
 import Layout from "../components/Layout";
 import { useGame } from "../context/GameContext";
+import React, {useState} from "react";
+import ghostImg from '../img/ghost.jpg';
 
 function Ghost() {
     const { addItem } = useGame();
 
     return (
         <Layout nextPath="/5Exit">
-            <h1>귀신</h1>
-            <button onClick={() => addItem("열쇠")}>열쇠 줍기 🔑</button>
+            <img src={ghostImg}></img>
         </Layout>
     );
 }
