@@ -317,6 +317,7 @@ class WedRequestHandler(BaseHTTPRequestHandler):
 
             quiz_science = str(fibonacci_number(n))
             data = quiz_science
+            print("과학실 문제: ", data)
             self.wfile.write (data.encode('utf-8'))
 
 
