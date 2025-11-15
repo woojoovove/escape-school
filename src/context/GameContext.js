@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState, useCallback } from "rea
 const GameContext = createContext();
 
 export function GameProvider({ children }) {
+
     // 인벤토리 상태 (서버에서 복원)
     const [items, setItems] = useState([]);
     const [roomNumber, setRoomNumber] = useState(1);
@@ -17,6 +18,9 @@ export function GameProvider({ children }) {
         }
     });
     const [userId, setUserId] = useState("");
+
+    // 슬롯 상태
+    const [saveNumber, setSaveNumber] = useState(1);
 
     useEffect(() => {
         try {
