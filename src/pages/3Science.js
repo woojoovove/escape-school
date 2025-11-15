@@ -1,7 +1,6 @@
 ﻿import React, { useEffect, useMemo, useRef, useState } from "react";
 import Layout from "../components/Layout";
 import { useGame } from "../context/GameContext";
-import fibonacciImg from '../img/fibonacci.png';
 import scienceImg from '../img/science.jpg';
 import fibonacciImg from "../img/fibonacci.png";
 
