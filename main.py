@@ -212,14 +212,17 @@ class WedRequestHandler(BaseHTTPRequestHandler):
         #NextButton을 누를 때마다 현재 방 번호를 파일에 저장한다.
         if parsed.path == "/game_save":
             with open("save_file.json","r")as f:
-                login_data=json.load(f)
-            room_num=3
-            user_id = query_params.get("id")[0]
+                db=json.load(f)
+
+            user_id = query_params["id"][0]
+            room_num = query_params["room_num"][0]
+            save_slots = str(query_params["save_slots"][0])
+
             print(user_id)
-            save_slots = str(query_params.get("save_slots")[0])
+            print(room_num)
             print(save_slots)
 
-            login_data[user_id][save_slots]=room_num
+            db[user_id][save_slots][room_num]=room_num
             data = f"{save_slots}번 슬롯에 저장됨"
             self.wfile.write (data.encode('utf-8'))
             with open("save_file.json", "w")as f:
