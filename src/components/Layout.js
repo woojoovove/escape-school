@@ -8,7 +8,7 @@ function Layout({ children, nextPath }) {
     const location = useLocation();
     const { items, roomNumber, setRoomNumber } = useGame();
 
-    const hiddenOn = new Set(["/", "/register", "/LoadPage", "/6Ending"]);
+    const hiddenOn = new Set(["/", "/register", "/LoadPage", "/5Ending", "/4Exit"]);
     const isHidden = hiddenOn.has(location.pathname);
 
     // URL에서 방 번호를 읽어 자동 설정 (로그인/로딩/엔딩 제외)

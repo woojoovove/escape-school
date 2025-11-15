@@ -105,7 +105,7 @@ function Science() {
     }, []);
 
     return (
-        <Layout nextPath="/4Ghost">
+        <Layout nextPath="/4Exit">
             <h1 style={{ marginBottom: 16 }}>과학실</h1>
 
             <div style={{ display: "flex", gap: 16, width: "100%", maxWidth: 1100 }}>

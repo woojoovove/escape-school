@@ -6,9 +6,8 @@ import Register from "./pages/Register";
 import Class from "./pages/1Class";
 import Teacher from "./pages/2Teacher";
 import Science from "./pages/3Science";
-import Ghost from "./pages/4Ghost";
-import Exit from "./pages/5Exit";
-import Ending from "./pages/6Ending";
+import Exit from "./pages/4Exit";
+import Ending from "./pages/5Ending";
 import LoadPage from "./pages/LoadPage";
 
 function ProtectedRoute({ children }) {
@@ -28,9 +27,9 @@ function App() {
             <Route path="/1Class" element={<ProtectedRoute><Class /></ProtectedRoute>} />
             <Route path="/2Teacher" element={<ProtectedRoute><Teacher /></ProtectedRoute>} />
             <Route path="/3Science" element={<ProtectedRoute><Science /></ProtectedRoute>} />
-            <Route path="/4Ghost" element={<ProtectedRoute><Ghost /></ProtectedRoute>} />
-            <Route path="/5Exit" element={<ProtectedRoute><Exit /></ProtectedRoute>} />
-            <Route path="/6Ending" element={<ProtectedRoute><Ending /></ProtectedRoute>} />
+            
+            <Route path="/4Exit" element={<ProtectedRoute><Exit /></ProtectedRoute>} />
+            <Route path="/5Ending" element={<ProtectedRoute><Ending /></ProtectedRoute>} />
         </Routes>
     );
 }

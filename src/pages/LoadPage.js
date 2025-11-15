@@ -18,14 +18,14 @@ const ROOM_ROUTE_BY_NAME = {
     teacher: "/2Teacher",
     science_room: "/3Science",
     science: "/3Science",
-    exit: "/5Exit",
+    exit: "/4Exit",
 };
 
 const KEYWORD_ROUTES = [
     { regex: /교실|class/i, path: "/1Class" },
     { regex: /교무실|office|teacher/i, path: "/2Teacher" },
     { regex: /과학|science/i, path: "/3Science" },
-    { regex: /출구|exit/i, path: "/5Exit" },
+    { regex: /출구|exit/i, path: "/4Exit" },
 ];
 
 const resolveDestination = (roomValue, fallbackText = "") => {

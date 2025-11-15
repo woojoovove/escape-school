@@ -12,7 +12,7 @@ function NextButton({ nextPath }) {
     const [checking, setChecking] = useState(false);
     const [showChoice, setShowChoice] = useState(false);
 
-    const hiddenOn = new Set(["/", "/register", "/LoadPage", "/6Ending"]);
+    const hiddenOn = new Set(["/", "/register", "/LoadPage", "/5Ending", "/4Exit"]);
     const isHidden = hiddenOn.has(location.pathname);
 
     const checkComplete = useCallback(async () => {
