@@ -479,9 +479,9 @@ dict = {
                 login_data[new_id] = {
                     "id":new_id,
                     "pwd":new_pwd,
-                    1:0,
-                    2:0,
-                    3:0
+                    1:{"room_num":0, "time": ""},
+                    2:{"room_num":0, "time": ""},
+                    3:{"room_num":0, "time": ""},
                 }
                 data = "성공"
                 self.wfile.write (data.encode('utf-8'))
