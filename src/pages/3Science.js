@@ -1,6 +1,7 @@
 ﻿import React, { useMemo, useState, useEffect } from "react";
 import Layout from "../components/Layout";
 import { useGame } from "../context/GameContext";
+import fibonacciImg from '../img/fibonacci.png';
 
 function Science() {
     const { addItem, items } = useGame();
@@ -22,6 +23,7 @@ function Science() {
 
     const [quizLoading, setQuizLoading] = useState(true);
     const [quizText, setQuizText] = useState("")
+    const [lockerUnlocked, setLockerUnlocked] = useState(false);
 
     const handleGlassCaseClick = () => {
         if (hasAxe || tookAxe) return;
@@ -47,18 +49,39 @@ function Science() {
     };
 
     const handleSubmit = () => {
-        const isCorrect = inputSeq.every((v, i) => v === correctSeq[i]);
-        if (!isCorrect) {
-            alert("틀렸습니다. 다시 시도하세요.");
-            setInputSeq([]);
-            return;
-        }
-
-        setSolved(true);
-        setShowKeypad(false);
-        addItem("마스터 키");
-        alert("정답입니다! 마스터 키를 얻었습니다.");
+        const answer = inputSeq.join(""); // "4181" 같은 문자열
+        checkScienceAnswer(answer);
     };
+
+
+    const checkScienceAnswer = async (answer) => {
+        try {
+            const url = `http://localhost:8080/quiz_science?science_answer=${encodeURIComponent(answer)}`;
+
+            const res = await fetch(url, { method: "GET" });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+            const text = (await res.text()).trim(); // "정답" 또는 "오답"
+
+            if (text === "정답") {
+                alert("🎉 과학문제 정답입니다!");
+                addItem("마스터키");
+                setLockerUnlocked(true);
+                setShowKeypad(false)
+            } else if (text === "오답") {
+                alert("❌ 오답입니다. 다시 시도하세요.");
+            } else {
+                alert("⚠️ 서버 응답이 올바르지 않습니다: " + text);
+            }
+
+            return text;
+        } catch (e) {
+            console.error(e);
+            alert("서버 오류가 발생했습니다.");
+            return null;
+        }
+    };
+
 
     useEffect(() => {
         let aborted = false;
@@ -151,11 +174,13 @@ function Science() {
                                 }}
                                 title={isPuzzle ? (solved ? "퍼즐 해결" : "클릭하여 퍼즐 시작") : "장식장"}
                             >
-                                {idx}
+                                
                                 {idx === 0 && (
                                     <span>{quizText}</span>
                                 )}
-                                {/*{idx === 1 && isPuzzle ? (solved ? "퍼즐 해결됨" : "퍼즐 장식장") : "장식장"}*/}
+                                
+                                {idx === 1 && (solved ? "퍼즐 해결됨" : "퍼즐 장식장")}
+                                {idx === 2 && <img src={fibonacciImg} height={80} ></img>}
                             </div>
                         );
                     })}
