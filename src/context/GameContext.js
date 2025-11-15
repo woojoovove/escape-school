@@ -99,6 +99,8 @@ export function GameProvider({ children }) {
                 clearItems,
                 roomNumber,
                 setRoomNumber,
+                setSaveNumber,
+                saveNumber,
                 moveToNextRoom,
                 resetRoom,
                 isLoggedIn,
