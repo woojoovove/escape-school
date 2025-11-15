@@ -4,7 +4,7 @@ import Layout from "../components/Layout";
 import { useGame } from "../context/GameContext";
 
 function LoadPage() {
-    const { isLoggedIn, userId } = useGame();
+    const { isLoggedIn, userId, refreshInventory } = useGame();
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
 
@@ -20,6 +20,7 @@ function LoadPage() {
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const text = (await res.text()).trim();
             setMessage(text || "로드 결과가 없습니다");
+            await refreshInventory();
 
             // 서버 메시지에 따라 라우팅
             if (text.includes("교실")) {
