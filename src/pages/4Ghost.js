@@ -7,8 +7,8 @@ function Ghost() {
     const { addItem } = useGame();
 
     return (
-        <Layout nextPath="/5Exit">
-            <img src={ghostImg}></img>
+        <Layout>
+            <img src={ghostImg} onClick={() => (window.location.href = "/5Exit")}></img>
         </Layout>
     );
 }
