@@ -23,7 +23,6 @@ function Science() {
 
     const [quizLoading, setQuizLoading] = useState(true);
     const [quizText, setQuizText] = useState("")
-    const [lockerUnlocked, setLockerUnlocked] = useState(false);
 
     const handleGlassCaseClick = () => {
         if (hasAxe || tookAxe) return;
