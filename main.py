@@ -282,16 +282,25 @@ class WedRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write (data.encode('utf-8'))
 
         if parsed.path == "/make_quiz_class":
-            global quiz_class_question 
+            global quiz_class_question
             global quiz_class_answer
+
+            # 4개의 랜덤 숫자 생성
             quiz_class_question = [random.randint(1, 9) for _ in range(4)]
-            quiz_class_answer = quiz_class_question
-            random.shuffle(quiz_class_answer)
-            quiz_class_answer = "".join(str(num) for num in quiz_class_answer)
+
+            # 정답은 복사된 리스트를 섞어서 생성
+            answer_list = quiz_class_question[:] # deepcopy
+            random.shuffle(answer_list)
+
+            # 문자열 변환
+            quiz_class_answer = "".join(str(num) for num in answer_list)
             data = "".join(str(num) for num in quiz_class_question)
-            print(data)
+
+            print("문제:", data)
+            print("정답:", quiz_class_answer)
+
             self.wfile.write(data.encode('utf-8'))
-        
+
         if parsed.path == "/make_quiz_science":
             n = random.randint(1, 20)
             
@@ -311,10 +320,10 @@ class WedRequestHandler(BaseHTTPRequestHandler):
 
 
         if parsed.path == "/quiz_class":
-            print(quiz_class_answer)
+
             class_answer = query_params.get("class_answer", [None])[0]
-            print(class_answer)
-            
+            print("사용자 입력:", class_answer)
+
             if quiz_class_answer == class_answer:
                 data = "정답"
                 self.wfile.write (data.encode('utf-8'))
