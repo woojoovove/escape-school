@@ -1,4 +1,4 @@
-﻿import React, { useMemo, useState } from "react";
+﻿import React, { useMemo, useState, useEffect } from "react";
 import Layout from "../components/Layout";
 import { useGame } from "../context/GameContext";
 
@@ -19,6 +19,9 @@ function Science() {
     const [showKeypad, setShowKeypad] = useState(false);
     const [inputSeq, setInputSeq] = useState([]);
     const [solved, setSolved] = useState(hasMaster);
+
+    const [quizLoading, setQuizLoading] = useState(true);
+    const [quizText, setQuizText] = useState("")
 
     const handleGlassCaseClick = () => {
         if (hasAxe || tookAxe) return;
@@ -56,6 +59,28 @@ function Science() {
             alert("정답입니다! 마스터 키를 얻었습니다.");
         }
     };
+
+    useEffect(() => {
+        let aborted = false;
+        const fetchQuiz = async () => {
+            try {
+                setQuizLoading(true);
+                const res = await fetch("http://localhost:8080/quiz_science", {method: "GET"});
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const text = (await res.text()).trim();
+                if (!aborted) setQuizText(text);
+            } catch (e) {
+                console.error(e);
+
+            } finally {
+                if (!aborted) setQuizLoading(false);
+            }
+        };
+        fetchQuiz();
+        return () => {
+            aborted = true;
+        };
+    }, []);
 
     return (
         <Layout nextPath="/6Ending">
@@ -126,7 +151,11 @@ function Science() {
                                 }}
                                 title={isPuzzle ? (solved ? "퍼즐 해결" : "클릭하여 퍼즐 시작") : "장식장"}
                             >
-                                {isPuzzle ? (solved ? "퍼즐 해결됨" : "퍼즐 장식장") : "장식장"}
+                                {idx}
+                                {idx === 0 && (
+                                    <span>{quizText}</span>
+                                )}
+                                {/*{idx === 1 && isPuzzle ? (solved ? "퍼즐 해결됨" : "퍼즐 장식장") : "장식장"}*/}
                             </div>
                         );
                     })}
