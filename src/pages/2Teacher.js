@@ -73,21 +73,21 @@ function Teacher() {
 
     const maybeShowGhost = () => {
 
-        if (Math.random() <= 0.3) {
+        if (ghostTimerRef.current) clearTimeout(ghostTimerRef.current);
 
-            if (ghostTimerRef.current) clearTimeout(ghostTimerRef.current);
+        setShowGhost(true);
 
-            setShowGhost(true);
-
-            ghostTimerRef.current = setTimeout(() => {
-                setShowGhost(false);
-                alert("정답이 아닙니다.");
-
-            }, 1500);
-
-        }else{
+        ghostTimerRef.current = setTimeout(() => {
+            setShowGhost(false);
             alert("정답이 아닙니다.");
-        }
+
+        }, 1500);
+        // if (Math.random() <= 0.3) {
+
+
+        // }else{
+        //     alert("정답이 아닙니다.");
+        // }
 
     };
     const submitAnswer = async () => {
@@ -191,6 +191,7 @@ function Teacher() {
                                     position: "relative",
                                     fontWeight: 700,
                                     userSelect: "none",
+                                    color: opened ? "#006400" : "#333",
                                 }}
                             >
                                 {isMemo && (
@@ -203,6 +204,7 @@ function Teacher() {
                                             background: "none",
                                             border: "none",
                                             cursor: "pointer",
+                                            color: "#333",
                                             fontSize: 20,
                                         }}
                                         title="메모 확인"
@@ -218,6 +220,7 @@ function Teacher() {
                                             background: "none",
                                             border: "none",
                                             fontSize: 28,
+                                            color: opened ? "#006400" : "#333",
                                             cursor: opened ? "default" : "pointer",
                                         }}
                                         title={opened ? "열림" : "자물쇠 열기"}
@@ -235,6 +238,7 @@ function Teacher() {
                                                 background: "none",
                                                 border: "none",
                                                 cursor: "pointer",
+                                                color: "#333",
                                                 fontSize: 22,
                                             }}
                                             title="칠판 메모 보기"
@@ -294,6 +298,7 @@ function Teacher() {
                                 background: "none",
                                 border: "none",
                                 cursor: "pointer",
+                                color: "#333",
                                 fontSize: 22,
                             }}
                             title="책상 메모 보기"
@@ -360,6 +365,7 @@ function Teacher() {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
+                        color: "black",
                         zIndex: 900,
                     }}
                     onClick={() => setShowMemoModal(false)}

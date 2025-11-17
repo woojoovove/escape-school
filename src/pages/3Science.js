@@ -59,22 +59,22 @@ function Science() {
 
 
     const maybeShowGhost = () => {
+        if (ghostTimerRef.current) clearTimeout(ghostTimerRef.current);
 
-        if (Math.random() <= 0.3) {
+        setShowGhost(true);
 
-            if (ghostTimerRef.current) clearTimeout(ghostTimerRef.current);
-
-            setShowGhost(true);
-
-            ghostTimerRef.current = setTimeout(() => {
-                setShowGhost(false)
-                alert("틀렸습니다. 다시 시도해 보세요.");
-            },
-            1500);
-
-        } else{
+        ghostTimerRef.current = setTimeout(() => {
+            setShowGhost(false)
             alert("틀렸습니다. 다시 시도해 보세요.");
-        }
+        },
+        1500);
+
+        // if (Math.random() <= 0.3) {
+
+
+        // } else{
+        //     alert("틀렸습니다. 다시 시도해 보세요.");
+        // }
 
     };
 
@@ -182,7 +182,9 @@ function Science() {
                             width: "100%",
                             height: "100%",
                             objectFit: "cover", // div를 꽉 채우면서 비율 유지
-                        }}></img>
+                        }}>
+                            
+                        </img>
                     </div>
                 </div>
 
@@ -203,6 +205,7 @@ function Science() {
                                     alignItems: "center",
                                     justifyContent: "center",
                                     cursor: isPuzzle && !solved ? "pointer" : "default",
+                                    color : "#333",
                                     position: "relative",
                                 }}
                                 title={isPuzzle ? (solved ? "퍼즐 해결" : "클릭하여 퍼즐 시작") : "장식장"}
@@ -248,7 +251,7 @@ function Science() {
                         }}
                     >
                         <div style={{ fontWeight: 700 }}>정답 숫자들을 순서대로 누르세요.</div>
-                        <div style={{ minHeight: 24, opacity: 0.8 }}>입력: {inputSeq.join(" ")}</div>
+                        <div style={{ minHeight: 24, opacity: 0.8, color: "#333" }}>입력: {inputSeq.join(" ")}</div>
                         <div
                             style={{
                                 display: "grid",

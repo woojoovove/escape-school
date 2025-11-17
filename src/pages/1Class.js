@@ -54,21 +54,21 @@ function Class() {
 
     const maybeShowGhost = () => {
 
-        if (Math.random() <= 0.3) {
+        if (ghostTimerRef.current) clearTimeout(ghostTimerRef.current);
 
-            if (ghostTimerRef.current) clearTimeout(ghostTimerRef.current);
+        setShowGhost(true);
 
-            setShowGhost(true);
+        ghostTimerRef.current = setTimeout(() => {
+            setShowGhost(false);
+            alert("오답입니다. 다시 시도해주세요.");
+        },
+         1500);
+        // if (Math.random() <= 0.3) {
 
-            ghostTimerRef.current = setTimeout(() => {
-                setShowGhost(false);
-                alert("오답입니다. 다시 시도해주세요.");
-            },
-             1500);
 
-        } else{
-                alert("오답입니다. 다시 시도해주세요.");
-        }
+        // } else{
+        //         alert("오답입니다. 다시 시도해주세요.");
+        // }
     };
 
 
@@ -173,6 +173,7 @@ function Class() {
                                 justifyContent: "center",
                                 cursor: hasLock && !opened ? "pointer" : "default",
                                 userSelect: "none",
+                                color: opened ? "#006400" : "#333",
                                 position: "relative",
                             }}
                             title={hasLock ? (opened ? "열림" : "사물함에 자물쇠가 있습니다") : "비어있는 사물함"}
