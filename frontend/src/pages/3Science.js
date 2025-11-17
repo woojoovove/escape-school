@@ -82,7 +82,7 @@ function Science() {
 
     const checkScienceAnswer = async (answer) => {
         try {
-            const url = `http://localhost:8080/quiz_science?science_answer=${encodeURIComponent(answer)}`;
+            const url = `http://backend:8080/quiz_science?science_answer=${encodeURIComponent(answer)}`;
             const res = await fetch(url, { method: "GET" });
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
@@ -113,7 +113,7 @@ function Science() {
         const fetchQuiz = async () => {
             try {
                 setQuizLoading(true);
-                const res = await fetch("http://localhost:8080/make_quiz_science", {method: "GET"});
+                const res = await fetch("http://backend:8080/make_quiz_science", {method: "GET"});
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const text = (await res.text()).trim();
                 if (!aborted) setQuizText(text);

@@ -17,7 +17,7 @@ function NextButton({ nextPath }) {
     const checkComplete = useCallback(async () => {
         try {
             setChecking(true);
-            const res = await fetch(`http://localhost:8080/check_complete?room_num=${roomNumber}`, { method: "GET" });
+            const res = await fetch(`http://backend:8080/check_complete?room_num=${roomNumber}`, { method: "GET" });
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const text = (await res.text()).trim();
             const ok = /true|1/i.test(text);
@@ -41,7 +41,7 @@ function NextButton({ nextPath }) {
     const gameSaveAndGo = () => {
         try {
             if (userId) {
-                const url = `http://localhost:8080/game_save?id=${encodeURIComponent(userId)}&save_slots=${encodeURIComponent(saveNumber)}&room_num=${encodeURIComponent(roomNumber)}`;
+                const url = `http://backend:8080/game_save?id=${encodeURIComponent(userId)}&save_slots=${encodeURIComponent(saveNumber)}&room_num=${encodeURIComponent(roomNumber)}`;
                 fetch(url, { method: 'GET' });
             }
         } catch (e) {

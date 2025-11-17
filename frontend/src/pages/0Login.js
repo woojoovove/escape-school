@@ -19,7 +19,7 @@ function Login() {
 
         try {
             const response = await fetch(
-                `http://localhost:8080/login?id=${encodeURIComponent(id)}&pwd=${encodeURIComponent(pwd)}`,
+                `http://backend:8080/login?id=${encodeURIComponent(id)}&pwd=${encodeURIComponent(pwd)}`,
                 { method: "GET" }
             );
             if (!response.ok) throw new Error(`HTTP ${response.status}`);

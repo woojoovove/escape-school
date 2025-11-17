@@ -34,7 +34,7 @@ function Teacher() {
             try {
                 setQuizLoading(true);
                 setQuizError("");
-                const res = await fetch("http://localhost:8080/make_quiz_office", { method: "GET" });
+                const res = await fetch("http://backend:8080/make_quiz_office", { method: "GET" });
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const text = (await res.text()).trim();
                 if (!aborted) setQuizText(text);
@@ -99,7 +99,7 @@ function Teacher() {
         if (submitting) return;
         try {
             setSubmitting(true);
-            const url = `http://localhost:8080/quiz_office?office_answer=${encodeURIComponent(trimmed)}`;
+            const url = `http://backend:8080/quiz_office?office_answer=${encodeURIComponent(trimmed)}`;
             const res = await fetch(url, { method: "GET" });
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const text = (await res.text()).trim();

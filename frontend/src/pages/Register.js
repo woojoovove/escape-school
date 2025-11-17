@@ -17,7 +17,7 @@ function Register() {
         }
 
         try {
-            const response = await fetch("http://localhost:8080/register", {
+            const response = await fetch("http://backend:8080/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ id, pwd }),

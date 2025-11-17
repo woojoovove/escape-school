@@ -32,7 +32,7 @@ function Class() {
             try {
                 setQuizLoading(true);
                 setQuizError("");
-                const res = await fetch("http://localhost:8080/make_quiz_class", { method: "GET" });
+                const res = await fetch("http://backend:8080/make_quiz_class", { method: "GET" });
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const text = (await res.text()).trim();
                 if (!aborted) setQuiz(text);
@@ -94,7 +94,7 @@ function Class() {
         }
         try {
             setSubmitting(true);
-            const url = `http://localhost:8080/quiz_class?class_answer=${encodeURIComponent(trimmed)}`;
+            const url = `http://backend:8080/quiz_class?class_answer=${encodeURIComponent(trimmed)}`;
             const res = await fetch(url, { method: "GET" });
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const text = (await res.text()).trim();
