@@ -152,7 +152,7 @@ export function GameProvider({ children }) {
             const formatted = formatSecondsToClock(totalSeconds);
             setIsSavingTime(true);
             try {
-                const url = `http://backend:8080/save_time?id=${encodeURIComponent(
+                const url = `http://localhost:8080/save_time?id=${encodeURIComponent(
                     id
                 )}&time=${encodeURIComponent(formatted)}`;
                 await fetch(url, { method: "GET" });
@@ -190,7 +190,7 @@ export function GameProvider({ children }) {
     // 서버에서 인벤토리 새로고침
     const refreshInventory = useCallback(async () => {
         try {
-            const res = await fetch("http://backend:8080/call_inventory", { method: "GET" });
+            const res = await fetch("http://localhost:8080/call_inventory", { method: "GET" });
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const text = (await res.text()) || ""; // 예: {'key_office', 'memo_locker'} 또는 'set()'
             const knownCodes = new Set(Object.values(serverCodeMap));
@@ -216,7 +216,7 @@ export function GameProvider({ children }) {
         const code = serverCodeMap[item] || item;
         try {
             await fetch(
-                `http://backend:8080/save_item?item=${encodeURIComponent(code)}`,
+                `http://localhost:8080/save_item?item=${encodeURIComponent(code)}`,
                 { method: "GET" }
             );
         } catch (e) {
