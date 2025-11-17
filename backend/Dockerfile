@@ -2,10 +2,10 @@ FROM python:3.11
 
 WORKDIR /app
 
-RUN pip install
-
 COPY . .
+
+ENV PYTHONUNBUFFERED=1
 
 EXPOSE 8080
 
-CMD ["python", "app.py"]
+CMD ["python", "main.py"]
